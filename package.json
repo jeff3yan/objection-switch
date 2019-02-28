@@ -4,7 +4,7 @@
   "description": "A prototype library to test feasibility for dynamic model switching",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env NODE_ENV=test nyc mocha --slow 10 --timeout 5000 --reporter spec --exit test/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -19,9 +19,11 @@
   "homepage": "https://github.com/jeff3yan/objection-switch#readme",
   "devDependencies": {
     "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
     "knex": "^0.16.3",
     "mocha": "^6.0.1",
     "mysql": "^2.16.0",
+    "nyc": "^13.3.0",
     "objection": "^1.6.2",
     "pg": "^7.8.1",
     "sqlite3": "^4.0.6"
