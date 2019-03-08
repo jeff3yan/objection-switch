@@ -11,17 +11,23 @@ describe('basic', function () {
         PersonView = session.models.PersonView;
       });
 
-      before(function () {
+      before(async function() {
         return testUtils.dropDb(session);
       });
 
-      before(function () {
+      before(async function () {
         return testUtils.createDb(session);
       });
 
-      it('should insert using view', async () => {
+      it('should insert', async () => {
         const { firstName } = await PersonView.query().insert({ firstName: 'test' });
         firstName.should.equal('test');
+      });
+
+      it('should findById', async () => {
+        const { id } = await PersonView.query().insert({ firstName: 'test' });
+        const { id: foundId } = await PersonView.query().findById(id);
+        foundId.should.equal(id);
       });
     });
   });
