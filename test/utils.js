@@ -79,5 +79,6 @@ function createModels(knex) {
   }
 
   Person.knex(knex);
+  PersonView.knex(knex);
   return { Person, PersonView };
 }
