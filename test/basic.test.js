@@ -29,6 +29,12 @@ describe('basic', function () {
         const { id: foundId } = await PersonView.query().findById(id);
         foundId.should.equal(id);
       });
+
+      it('should update', async () => {
+        const { id } = await PersonView.query().insert({ firstName: 'test' });
+        const { firstName } = await PersonView.query().patchAndFetchById(id, { firstName: 'test2' });
+        firstName.should.equal('test2');
+      });
     });
   });
 });
