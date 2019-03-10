@@ -1,8 +1,16 @@
 const Knex = require('knex');
 const { ViewModel } = require('../index');
+const path = require('path');
+const os = require('os');
 
 module.exports = {
-  testDatabaseConfigs: [
+  testDatabaseConfigs: [{
+      client: 'sqlite3',
+      connection: {
+        filename: path.join(os.tmpdir(), 'objection_switch_test.db')
+      },
+      useNullAsDefault: true
+    },
     {
       client: 'postgres',
       connection: {
@@ -15,7 +23,19 @@ module.exports = {
         min: 0,
         max: 10
       }
-    },
+    }, {
+      client: 'mysql',
+      connection: {
+        host: '127.0.0.1',
+        user: 'root',
+        password: 'postgres',
+        database: 'objection_switch_test'
+      },
+      pool: {
+        min: 0,
+        max: 10
+      }
+    }
   ],
 
   initialize: function (knexConfig) {
@@ -45,9 +65,9 @@ module.exports = {
     });
 
     await session.knex.raw(`
-      create view ?? as (
-        select * from ??
-      );
+      create view ?? as
+      select * from ??
+      ;
     `, ['PersonView', 'Person']
     );
   }
