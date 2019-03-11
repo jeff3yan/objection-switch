@@ -7,7 +7,7 @@ module.exports = {
   testDatabaseConfigs: [{
       client: 'sqlite3',
       connection: {
-        filename: path.join(os.tmpdir(), 'objection_switch_test.db')
+        filename: path.join(os.tmpdir(), 'objection_view_model_test.db')
       },
       useNullAsDefault: true
     },
@@ -15,7 +15,7 @@ module.exports = {
       client: 'postgres',
       connection: {
         host: '127.0.0.1',
-        database: 'objection_switch_test',
+        database: 'objection_view_model_test',
         user: 'postgres',
         password: 'postgres'
       },
@@ -29,7 +29,7 @@ module.exports = {
         host: '127.0.0.1',
         user: 'root',
         password: 'postgres',
-        database: 'objection_switch_test'
+        database: 'objection_view_model_test'
       },
       pool: {
         min: 0,

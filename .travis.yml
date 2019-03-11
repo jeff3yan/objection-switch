@@ -4,8 +4,8 @@ node_js:
 - '8'
 - '7'
 before_script:
-  - psql -c "create database objection_switch_test;" -U postgres
-  - mysql -e "create database objection_switch_test;"
+  - psql -c "create database objection_view_model_test;" -U postgres
+  - mysql -e "create database objection_view_model_test;"
 install:
   - yarn global add babel-cli
   - yarn global add coveralls
