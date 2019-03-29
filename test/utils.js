@@ -55,10 +55,22 @@ module.exports = {
     await session.knex.schema.createTable('Person', table => {
       table.bigincrements('id').unsigned().primary();
       table.integer('age');
-      table.biginteger('pid').unsigned().references('Person.id').index();
+      table.biginteger('parentId').unsigned().references('Person.id').index();
+      table.biginteger('countryId').unsigned().references('Country.id').index();
       table.string('firstName');
       table.string('lastName');
       table.string('nickName');
+    });
+
+    await session.knex.schema.createTable('Animal', table => {
+      table.bigincrements('id').unsigned().primary();
+      table.biginteger('ownerId').unsigned().references('Person.id').index();
+      table.string('name');
+    });
+
+    await session.knex.schema.createTable('Country', table => {
+      table.bigincrements('id').unsigned().primary();
+      table.string('name');
     });
 
     await session.knex.raw(`
@@ -81,6 +93,44 @@ function createModels(knex) {
     }
   }
 
+  class Animal extends ViewModel {
+    static get tableName() {
+      return 'Animal';
+    }
+
+    static get relationMappings() {
+      return {
+        owner: {
+          relation: objection.BelongsToOneRelation,
+          modelClass: Person,
+          join: {
+            from: 'Animal.ownerId',
+            to: 'PersonView.id'
+          }
+        }
+      };
+    }
+  }
+
+  class Country extends ViewModel {
+    static get tableName() {
+      return 'Country';
+    }
+
+    static get relationMappings() {
+      return {
+        people: {
+          relation: objection.HasManyRelation,
+          modelClass: Person,
+          join: {
+            from: 'Country.id',
+            to: 'PersonView.countryId'
+          }
+        }
+      };
+    }
+  }
+
   class PersonView extends ViewModel {
     static get tableName() {
       return 'PersonView';
@@ -91,11 +141,31 @@ function createModels(knex) {
     }
 
     static get relationMappings() {
-      return {};
+      return {
+        pets: {
+          relation: objection.HasManyRelation,
+          modelClass: Animal,
+          join: {
+            from: 'PersonView.id',
+            to: 'Animal.ownerId'
+          }
+        },
+
+        country: {
+          relation: objection.BelongsToOneRelation,
+          modelClass: Person,
+          join: {
+            from: 'PersonView.countryId',
+            to: 'Country.id'
+          }
+        }
+      };
     }
   }
 
   Person.knex(knex);
   PersonView.knex(knex);
+  Animal.knex(knex);
+  Country.knex(knex);
   return { Person, PersonView };
 }
